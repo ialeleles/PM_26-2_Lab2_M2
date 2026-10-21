@@ -81,8 +81,17 @@ public class Contratado extends Professor {
 	 */
 	@Override 
 	protected double cargaAtual(){
-		//TODO
-		return  0;
+		double horas = 0;
+
+		for (EDisciplina eDisciplina : disciplinas) {
+			horas += eDisciplina.horasAula();
+		}
+
+		for (EAtividade eAtividade : outrasFuncoes) {
+			horas += eAtividade.cargaHoraria();
+		}
+
+		return horas * (1 + EXTRA_CLASSE);
 	}
 	
 
@@ -93,8 +102,15 @@ public class Contratado extends Professor {
 	 * @return quantidade de disciplinas do contratado após a inclusão
 	 */
 	public int incluirDisciplinas(List<EDisciplina> turmas) {
-		//TODO
-		return 0;
+		if(cargaAtual() < MAX_HORAS) {
+			for (EDisciplina eDisciplina : turmas) {
+				if(cargaAtual() + eDisciplina.horasAula() <= MAX_HORAS) {
+					turmas.add(eDisciplina);
+				}
+			}
+		}
+
+		return turmas.size();
 	}
 
 	/**
@@ -118,7 +134,13 @@ public class Contratado extends Professor {
 	 * @return valor do salário mensal, em reais
 	 */
 	public double salarioMensal() {
-		//TODO
-		return 0;
+		double salario = cargaAtual() * HORA_AULA * SEMANAS_MES;
+		int quantidadeCincoAnos = LocalDate.now().getYear() - dataContratacao.getYear() / ANOS_ADICIONAL;
+
+		for (int i = 0; i < quantidadeCincoAnos; i++) {
+			salario += salario * (1 + ADICIONAL);
+		}
+
+		return salario;
 	}
 }

@@ -91,8 +91,15 @@ public class Substituto extends Professor {
 	 * @return quantidade de disciplinas do substituto após a inclusão
 	 */
 	public int incluirDisciplinas(List<EDisciplina> turmas) {
-		//TODO
-		return  0;
+		while (cargaAtual() < MIN_AULAS) {
+			for (EDisciplina eDisciplina : turmas) {
+				if(cargaAtual() <= MAX_AULAS) {
+					turmas.add(eDisciplina);
+				}
+			}
+		}
+
+		return turmas.size();
 	}
 
 	/**
